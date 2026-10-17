@@ -106,7 +106,16 @@ Un filtro con un valor desconocido (`?estado=cerrado`) también responde `400`, 
 
 ## Despliegue
 
-El repositorio incluye `build.sh`, que compila el frontend, instala dependencias, ejecuta `collectstatic` y aplica migraciones. Ejemplo con Render (Web Service con runtime Python):
+Despliegue actual:
+
+- **Frontend:** Vercel, con Root Directory `frontend`. → https://reto-tecnico-one.vercel.app
+- **Backend:** Render. → https://reto-tecnico-1j5t.onrender.com/api/incidencias/
+
+El front llama a la ruta relativa `/api`. En Vercel, `frontend/vercel.json` reenvía `/api/*` al backend de Render, así que no hace falta CORS ni cambiar la URL de la API por entorno. Si cambia el dominio de Render, hay que actualizarlo en ese archivo.
+
+El dominio `*.onrender.com` se agrega solo a `ALLOWED_HOSTS` mediante la variable `RENDER_EXTERNAL_HOSTNAME`, que define Render.
+
+Como alternativa, todo puede ir en un solo servicio de Render. El repositorio incluye `build.sh`, que compila el frontend, instala dependencias, ejecuta `collectstatic` y aplica migraciones; Django sirve entonces también el build de Vue. Configuración (Web Service con runtime Python):
 
 | Campo | Valor |
 |---|---|

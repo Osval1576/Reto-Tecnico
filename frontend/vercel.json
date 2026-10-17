@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path(.*)",
+      "destination": "https://reto-tecnico-1j5t.onrender.com/api/:path"
+    }
+  ]
+}

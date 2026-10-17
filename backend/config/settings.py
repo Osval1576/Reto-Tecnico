@@ -30,6 +30,11 @@ def lista_env(nombre, default=''):
 
 ALLOWED_HOSTS = lista_env('ALLOWED_HOSTS', '127.0.0.1,localhost')
 
+# Render define esta variable con el dominio del servicio (xxxx.onrender.com)
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 # Necesario en producción con HTTPS, p. ej. https://incidencias.onrender.com
 CSRF_TRUSTED_ORIGINS = lista_env('CSRF_TRUSTED_ORIGINS')
 
