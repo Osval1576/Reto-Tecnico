@@ -115,6 +115,15 @@ El front llama a la ruta relativa `/api`. En Vercel, `frontend/vercel.json` reen
 
 El dominio `*.onrender.com` se agrega solo a `ALLOWED_HOSTS` mediante la variable `RENDER_EXTERNAL_HOSTNAME`, que define Render.
 
+Configuración del Web Service en Render:
+
+| Campo | Valor |
+|---|---|
+| Root Directory | `backend` |
+| Build Command | `bash build.sh` (instala dependencias, `collectstatic` y `migrate`) |
+| Start Command | `gunicorn config.wsgi:application` |
+| Variables | `SECRET_KEY`, `DEBUG=False`, `DATABASE_URL` (Internal Database URL de Postgres) |
+
 Como alternativa, todo puede ir en un solo servicio de Render. El repositorio incluye `build.sh`, que compila el frontend, instala dependencias, ejecuta `collectstatic` y aplica migraciones; Django sirve entonces también el build de Vue. Configuración (Web Service con runtime Python):
 
 | Campo | Valor |
