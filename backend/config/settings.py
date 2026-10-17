@@ -1,20 +1,37 @@
 import os
 from pathlib import Path
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('django-insecure-9mhmjl2zdh3_g42fv6$zf=i$jt=8n=xubt)1s7s5ippmo!u556')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost, 127.0.0.1").split(".")
+if not SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured('Define SECRET_KEY en el entorno para producción.')
+    # Solo para que el proyecto arranque en local sin .env
+    SECRET_KEY = 'django-insecure-solo-para-desarrollo'
+
+
+def lista_env(nombre, default=''):
+    return [v.strip() for v in os.environ.get(nombre, default).split(',') if v.strip()]
+
+
+ALLOWED_HOSTS = lista_env('ALLOWED_HOSTS', '127.0.0.1,localhost')
+
+# Necesario en producción con HTTPS, p. ej. https://incidencias.onrender.com
+CSRF_TRUSTED_ORIGINS = lista_env('CSRF_TRUSTED_ORIGINS')
 
 
 # Application definition
@@ -94,9 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-mx'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
 
 USE_I18N = True
 
@@ -109,14 +126,32 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Django sirve también el build de Vue (frontend/dist) en "/"
 WHITENOISE_ROOT = BASE_DIR.parent / "frontend" / "dist"
 WHITENOISE_INDEX_FILE = True
+
+
+# Producción (DEBUG=False)
+
+if not DEBUG:
+    STORAGES = {
+        'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+        'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+    }
+    # La plataforma (Render, Railway, etc.) termina el HTTPS en su proxy
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '3600'))
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+# La app no envía correos; en local se imprimen en consola
+if DEBUG:
+    MAILERS = {
+        'default': {
+            'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        },
+    }

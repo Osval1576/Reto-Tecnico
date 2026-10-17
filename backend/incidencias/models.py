@@ -1,14 +1,14 @@
 from django.db import models
 
-class Incidencia(models.Models):
+class Incidencia(models.Model):
     class Prioridad(models.TextChoices):
         BAJA = "baja", "Baja"
         MEDIA = "media", "Media"
         ALTA = "alta", "Alta"
 
     class Estado(models.TextChoices):
-        NUEVO ="nuevo","Nuevo"
-        EN_PROCESO = "media", "Media"
+        NUEVO = "nuevo", "Nuevo"
+        EN_PROCESO = "en_proceso", "En proceso"
         RESUELTO = "resuelto", "Resuelto"
 
 
@@ -20,7 +20,7 @@ class Incidencia(models.Models):
     actualizada = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = [-creada_en]
+        ordering = ['-creada_en']
 
     def __str__(self):
         return self.titulo

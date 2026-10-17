@@ -1,8 +1,17 @@
+# Python
 venv/
-__pycahe__/
+.venv/
+__pycache__/
 *.pyc
+
+# Django
 db.sqlite3
+backend/staticfiles/
+
+# Variables de entorno (usar .env.example como plantilla)
 .env
+!.env.example
+
+# Frontend (el resto está en frontend/.gitignore)
 node_modules/
 frontend/dist/
-backend/ staticfiles/

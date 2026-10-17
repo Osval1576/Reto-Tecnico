@@ -1,0 +1,2 @@
+# Los scripts de shell se ejecutan en Linux al desplegar
+*.sh text eol=lf
