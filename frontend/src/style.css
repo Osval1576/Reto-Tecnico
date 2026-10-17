@@ -1,0 +1,93 @@
+/* Tokens de diseño tomados de AllSafe (frontend/src/style.css) */
+:root {
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, monospace;
+
+  --accent:        #0038FF;
+  --accent-hover:  #0026CC;
+  --accent-light:  rgba(0,56,255,.08);
+  --accent-fg:     #FFFFFF;
+
+  --bg:        #FAFBFC;
+  --surface:   #FFFFFF;
+  --surface-2: #F0F2F7;
+  --border:    #E4E7EF;
+
+  --text:   #0A0F1F;
+  --text-2: #4A5163;
+  --text-3: #8892A6;
+
+  --shadow-sm: 0 1px 2px rgba(10,15,31,.05);
+  --shadow-md: 0 4px 6px -1px rgba(10,15,31,.07), 0 2px 4px rgba(10,15,31,.04);
+
+  --r-sm: 6px;
+  --r:    10px;
+  --r-lg: 14px;
+
+  /* Estados: nuevo / en proceso / resuelto */
+  --c-open:        #F59E0B;
+  --c-open-bg:     #FEF3C7;
+  --c-progress:    #2563EB;
+  --c-progress-bg: #DBEAFE;
+  --c-resolved:    #10B981;
+  --c-resolved-bg: #D1FAE5;
+
+  /* Prioridades: baja / media / alta (alta usa el rojo "urgent" de AllSafe) */
+  --c-low:         #94A3B8;
+  --c-low-bg:      #F8FAFC;
+  --c-medium:      #3B82F6;
+  --c-medium-bg:   #DBEAFE;
+  --c-urgent:      #EF4444;
+  --c-urgent-bg:   #FEE2E2;
+}
+
+[data-theme="dark"] {
+  --accent:       #5B7CFF;
+  --accent-hover: #7A94FF;
+  --accent-light: rgba(91,124,255,.14);
+
+  --bg:        #05090F;
+  --surface:   #0B101B;
+  --surface-2: #131A2A;
+  --border:    #1F2A44;
+
+  --text:   #EDEFF5;
+  --text-2: #A9B4C9;
+  --text-3: #6B7691;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.55), 0 2px 4px rgba(0,0,0,.35);
+
+  --c-open-bg:     rgba(245,158,11,.14);
+  --c-progress-bg: rgba(59,130,246,.14);
+  --c-resolved-bg: rgba(16,185,129,.14);
+
+  --c-low-bg:      rgba(148,163,184,.1);
+  --c-medium-bg:   rgba(59,130,246,.14);
+  --c-urgent-bg:   rgba(239,68,68,.14);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { min-height: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background .2s, color .2s;
+}
+
+button { font-family: inherit; font-size: inherit; cursor: pointer; border: none; background: none; }
+
+input, textarea, select { font-family: inherit; font-size: inherit; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-3); }

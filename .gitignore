@@ -8,6 +8,12 @@ __pycache__/
 db.sqlite3
 backend/staticfiles/
 
+# Claves y certificados: nunca al repositorio
+id_rsa*
+id_ed25519*
+*.pem
+*.key
+
 # Variables de entorno (usar .env.example como plantilla)
 .env
 !.env.example
