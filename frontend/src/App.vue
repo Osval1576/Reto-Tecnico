@@ -2,6 +2,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { listarIncidencias, crearIncidencia, cambiarEstado } from './services/api'
 import { useTheme } from './composables/useTheme'
+import AyudaModal from './components/AyudaModal.vue'
 
 // Opciones (deben coincidir con los TextChoices del modelo en Django)
 const PRIORIDADES = [
@@ -16,6 +17,9 @@ const ESTADOS = [
 ]
 
 const { isDark, toggle: cambiarTema } = useTheme()
+
+// La ayuda se muestra cada vez que se entra a la app
+const mostrarAyuda = ref(true)
 
 // Estado de la pantalla
 const incidencias = ref([])
@@ -131,15 +135,22 @@ onMounted(cargar)
         <span class="sep">›</span>
         <h1 class="page-title">Seguimiento de incidencias</h1>
       </div>
-      <button
-        type="button"
-        class="tb-theme"
-        :aria-label="isDark ? 'Modo claro' : 'Modo oscuro'"
-        @click="cambiarTema"
-      >
-        <i :class="isDark ? 'ti ti-sun' : 'ti ti-moon'" aria-hidden="true"></i>
-      </button>
+      <div class="topbar-right">
+        <button type="button" class="tb-theme btn-ayuda" aria-label="Ver ayuda" @click="mostrarAyuda = true">
+          <i class="ti ti-help" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          class="tb-theme"
+          :aria-label="isDark ? 'Modo claro' : 'Modo oscuro'"
+          @click="cambiarTema"
+        >
+          <i :class="isDark ? 'ti ti-sun' : 'ti ti-moon'" aria-hidden="true"></i>
+        </button>
+      </div>
     </header>
+
+    <AyudaModal :abierta="mostrarAyuda" @cerrar="mostrarAyuda = false" />
 
     <main class="content">
       <p v-if="errorGeneral" class="alerta alerta--error" role="alert">
@@ -294,6 +305,7 @@ onMounted(cargar)
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
 .tb-theme {
   width: 34px;
   height: 34px;

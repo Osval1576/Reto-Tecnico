@@ -122,4 +122,33 @@ describe('App', () => {
     expect(wrapper.find('.incidencia select').element.value).toBe('nuevo')
     expect(wrapper.text()).toContain('No se pudo cambiar el estado.')
   })
+
+  describe('ayuda', () => {
+    it('se muestra al entrar a la app', async () => {
+      const wrapper = await montar()
+
+      expect(wrapper.find('[role="dialog"]').exists()).toBe(true)
+      expect(wrapper.text()).toContain('Cómo usar la app')
+    })
+
+    it('se cierra con Entendido y se reabre con el botón de ayuda', async () => {
+      const wrapper = await montar()
+
+      const entendido = wrapper.findAll('[role="dialog"] button').find((b) => b.text() === 'Entendido')
+      await entendido.trigger('click')
+      expect(wrapper.find('[role="dialog"]').exists()).toBe(false)
+
+      await wrapper.find('button[aria-label="Ver ayuda"]').trigger('click')
+      expect(wrapper.find('[role="dialog"]').exists()).toBe(true)
+    })
+
+    it('se cierra con Escape', async () => {
+      const wrapper = await montar()
+
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+      await flushPromises()
+
+      expect(wrapper.find('[role="dialog"]').exists()).toBe(false)
+    })
+  })
 })
